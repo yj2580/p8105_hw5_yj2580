@@ -8,6 +8,8 @@ output: github_document
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 library(tidyverse)
+library(readr)
+library(ggplot2)
 
 set.seed(10)
 ```
@@ -26,15 +28,26 @@ fill_value = function(x) {
    mean = round(mean(x, na.rm = TRUE),1)
    x = replace_na(x, mean)
   }
-  x
 }
-
 iris_new = map_dfr(iris_with_missing, fill_value)
+
 ```
 
 ## Problem 2
 
 ```{r}
-
+list1 = list.files(path = "data")
+data = purrr::map_dfr(str_c("./data/", list1), read_csv) %>%
+  mutate(name = list1, 
+         name = str_replace(name, ".csv", "")
+  ) %>%
+  separate(name, into = c("arm", "id"), sep = "_") %>%
+  mutate(arm = as.factor(arm), 
+         id = as.numeric(id)) %>%
+  select(arm, id, everything()) %>%
+  pivot_longer(week_1:week_8,
+              names_to = "week",
+              names_prefix = "week_",
+              values_to = "observation")
 ```
 
