@@ -42,12 +42,21 @@ data = purrr::map_dfr(str_c("./data/", list1), read_csv) %>%
          name = str_replace(name, ".csv", "")
   ) %>%
   separate(name, into = c("arm", "id"), sep = "_") %>%
-  mutate(arm = as.factor(arm), 
-         id = as.numeric(id)) %>%
+  mutate(arm = factor(arm), 
+         id = factor(id)) %>%
   select(arm, id, everything()) %>%
   pivot_longer(week_1:week_8,
               names_to = "week",
               names_prefix = "week_",
               values_to = "observation")
+
+data %>%
+  group_by(id) %>%
+  ggplot(aes(x = week, y = observation, colour = id, group = id)) +
+  geom_point() +
+  geom_line() + 
+  facet_grid(.~arm) +
+  labs(title = "Observations on each subject over time in different groups")
 ```
 
+## Problem 3
