@@ -30,6 +30,9 @@ fill_value = function(x) {
   }
 }
 iris_new = map_dfr(iris_with_missing, fill_value)
+
+head(iris_new, 10) %>%
+  knitr::kable()
 ```
 
 ## Problem 2
@@ -48,7 +51,8 @@ data = purrr::map_dfr(str_c("./data/", list1), read_csv) %>%
               names_to = "week",
               names_prefix = "week_",
               values_to = "observation")
-
+head(data, 10) %>%
+  knitr::kable()
 data %>%
   group_by(id) %>%
   ggplot(aes(x = week, y = observation, colour = id, group = id)) +
@@ -105,7 +109,7 @@ tibble(beta1 = 1:6,
   labs(x = "the true value of β1", y = "the proportion of times the null was rejected", title = "The association between effect size and power")
 ```
 
-Comments: As the effect size increases, the power goes up. However, the growth rate starts to decrease at a certain point.
+Comments: As the effect size increases, the power goes up. However, the growth rate starts to decrease from a certain point.
 
 ```{r}
 tibble(beta1 = 1:6,
@@ -132,7 +136,7 @@ tibble(beta1 = 1:6,
   labs(y = "the average estimate of β1_hat when the null was rejected ", x = "the true value of β1")
 ```
 
-Comments: The sample average of estimation of β1 across tests for which the null is rejected is higher than the true value of β1 when the true value of β1 is small, from 1 to 3. However, two values are approximately equal when true value is relatively higher, from 5 to 6. As true value (effect size) increases, power increases and we are more likely to reject the null. Therefore, We have larger sample size when true value of β1 is high, as shown below. Given that estimates follow a Normal distribution, the sample mean provides a good estimate as sample size increases, so the mean of estimates will be closer to the true value.
+Comments: The sample average of estimation of β1 across tests for which the null is rejected is higher than the true value of β1 when the true value of β1 is small, from 1 to 4. However, two values are approximately equal when the true value is relatively higher, from 5 to 6. As the true value of β1 (effect size) increases, its power increases and we are more likely to reject the null. Therefore, We have a larger sample size when true value of β1 is high, as shown below. Given that estimates follow a Normal distribution, the sample mean provides a good estimate of population mean as sample size increases, so the mean of estimates will be closer to the true value.
 
 
 ```{r}
